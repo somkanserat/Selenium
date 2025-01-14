@@ -1,0 +1,71 @@
+package calisma03_locators;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.time.Duration;
+
+public class K4_Xpath {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        /*
+            1- https://testotomasyonu.com/addremove/ adresine gidin
+            2- Add Element butonuna basin
+            3- Remove butonu’nun gorunur oldugunu test edin
+            4- Remove tusuna basin
+            5- “Add/Remove Elements” yazisinin gorunur oldugunu
+         */
+
+        System.setProperty("Webdriver.chrome.driver","kurulumDosyalari/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        //***1- https://testotomasyonu.com/addremove/ adresine gidin***
+        driver.get("https://testotomasyonu.com/addremove/");
+
+        //***2- Add Element butonuna basin***
+        driver.findElement(By.xpath("//button[@id='sub-btn']")).click();
+        /*              *******XPATH KULLANIRKEN*******
+           - //: HTML ağacında herhangi bir yerden başlayarak bir elementin arandığını belirtir
+           - button: HTML'deki button etiketine sahip bir elementi hedefler
+           - [@id='...']: Belirtilen id özelliğine sahip bir elementi seçer.
+           - sub-btn: Aranan elementin id değeri "sub-btn" olmalıdır.
+
+            //*[@id="sub-btn"] --> Add tuşuna sağ click --> incele --> işaretlenen kod'a sağ click --> copy --> copy Xpath
+            yukarıdaki adımlar izlendiğinde, bize verdiği Xpath. Bunu da kullanabiliriz.
+        */
+        Thread.sleep(2000);//2sn bekleme
+
+
+        //***3- Remove butonu’nun gorunur oldugunu test edin***
+        WebElement removeButton = driver.findElement(By.xpath("//*[@*='remove-btn']"));
+        // Remove butonunu Xpath ile WebElement olarak kaydettik
+        Thread.sleep(2000);//2sn bekleme
+
+        if (removeButton.isDisplayed()){  // if ile kontrol --> isDisplayed: Web element gorunuyor ise true, yoksa false döner
+            System.out.println("Remove butonu testi PASSED");
+        }else {
+            System.out.println("Remove butonu testi FAILED");
+        }
+
+        //***4- Remove tusuna basin***
+        removeButton.click();
+
+        //***5- “Add/Remove Elements” yazisinin gorunur oldugunu***
+        WebElement addRemoveYaziElementi = driver.findElement(By.tagName("h2")); // yazıyı tagName ile web element olarak kaydettik
+
+        if (addRemoveYaziElementi.isDisplayed()){ //if ile kontrol
+            System.out.println("Add Remove Yazisi görünme testi PASSED");
+        }else {
+            System.out.println("Add Remove Yazisi görünme testi FAILED");
+        }
+
+        Thread.sleep(2000);//2sn bekleme
+        driver.quit();//sayfaları kapat
+
+    }
+}
